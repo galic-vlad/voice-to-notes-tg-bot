@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  PTB-Voice-To-Notes-AWS-Serverless
+
+Parameters:
+  NotesBucket:
+    Type: String
+    Description: S3 Bucket where notes will be saved
+  TGApiToken:
+    Type: String
+    Description: Telegram bot token
+  DeepgramToken:
+    Type: String
+    Description: Deepgram API token
+
+Globals:
+  Function:
+    Timeout: 3
+    Runtime: python3.9
+    Architectures:
+      - x86_64
+
+Resources:
+  PTBFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: ptb_lambda.lambda_handler
+      FunctionUrlConfig:
+        AuthType: NONE
+      Timeout: 300
+      Environment:
+        Variables:
+          TG_API_TOKEN:
+            Ref: TGApiToken
+          DEEPGRAM_API_TOKEN:
+            Ref: DeepgramToken
+          S3_STORAGE_PATH:
+            Ref: NotesBucket
+      Policies:
+        - S3FullAccessPolicy:
+            BucketName:
+              Ref: NotesBucket
+    Metadata:
+      BuildMethod: makefile
+
+Outputs:
+  TelegramApi:
+    Description: "Lambda URL for PTB function"
+    Value:
+      Fn::GetAtt: PTBFunctionUrl.FunctionUrl

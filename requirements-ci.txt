@@ -1,0 +1,14 @@
+bandit
+flake8
+isort>=5.0
+radon>=5.0.0
+safety
+
+pytest
+pytest-aiohttp
+pytest-httpx
+pytest-cov
+flake8-commas
+coverage
+
+-r requirements.txt

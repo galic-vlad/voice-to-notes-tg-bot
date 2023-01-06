@@ -1,0 +1,16 @@
+# IDEA
+.idea/
+
+# Virtualenv
+.ve/
+
+# Local files
+local.env
+
+# AWS SAM deployment
+.aws-sam/
+*/samconfig.toml
+
+# Build artifacts
+build/
+*.egg-info/
